@@ -30,3 +30,10 @@ r2 = t3
 if r2 > 100 goto L1
 ```
 
+## Reaching Definitions
+
+Si può considerare ogni **istruzione di assegnamento** come una **definizione**. Una definizione _d_ raggiunge (**reaches**) un punto _p_ se **esiste** un percorso da _d_ a _p_ per cui _d_ **non è uccisa** lungo quel percorso.
+
+Si creano quindi tanti **bit vector** quanti sono i punti del programma, ovvero le sue istruzioni e la lunghezza di questi vettori è pari al numero di definizioni.
+
+Anche se ci sono branch in cui una definizione viene "killata", se esiste almeno un branch che la collega al punto, allora c'è reach.
