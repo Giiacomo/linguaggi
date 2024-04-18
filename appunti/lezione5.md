@@ -14,6 +14,7 @@ Un'istruzione può avere diversi effetti, tra cui, considerando ad esempio ```a 
 - **Define** $\longrightarrow$ una variabile (a)
 
 Componendo gli effetti delle singole istruzioni arriviamo agli effetti di un basic block:
+<div id="definizionieffetti"></div>
 - Un **uso localmente esposto** in un BB è un uso di una variabile che non è preceduto nel BB da una definizione della stessa variabile
 - Ogni definizione di una var nel BB uccide tutte le definizioni della stessa variabile che sono in grado di arrivare a quel BB
 - Una **definizione localmente disponibile** è l'ultima definizione di una variabile nel BB
@@ -37,3 +38,34 @@ Si può considerare ogni **istruzione di assegnamento** come una **definizione**
 Si creano quindi tanti **bit vector** quanti sono i punti del programma, ovvero le sue istruzioni e la lunghezza di questi vettori è pari al numero di definizioni.
 
 Anche se ci sono branch in cui una definizione viene "killata", se esiste almeno un branch che la collega al punto, allora c'è reach.
+
+## Schema DF analysis
+
+Consideriamo un flow graph e aggiungiamo due BB, uno di entry e uno di exit, in modo da avere una singola entrata/uscita.
+
+<img src="./imgs/flowgraphdf.PNG" alt="anatomia compilatore" />
+
+Definiamo un insieme di equazioni $in[b]$ e $out[b]$ per ogni basic block _b_. Abbiamo delle **funzioni di trasferimento** $f_b$ che correlano $in[b]$ e out[b] per un dato _b_. 
+
+Abbiamo che per un generico statement _s_, come una definizione $d: x = y + z$:
+$
+    out[s] = f_s(in[s]) = Gen[s] \cup (in[s]-Kill[s])
+$
+dove:
+- $Gen[s]$ è l'insieme delle definizioni **generate** 
+- $Kill[s]$ sono le altre definizioni di _x_ nel programma
+- $in[s] - Kill[s]$ sono le definizioni **propagate**
+
+La funzione di trasferimento di un **basic block B** è la composizione delle funzioni di trasferimento degli statement in B.
+$
+    out[B] = f_b(in[B]) = f_2f_1f_0(in[B])
+$
+
+di conseguenza, abbiamo che:
+- $Gen[B]$ è l'insieme delle <a href="#definizionieffetti">definzioni localmente disponibili</a>  
+- $Kill[B]$ è l'insieme delle definizioni uccise da B
+
+I nodi di **join** sono nodi con multipli predecessori e si può usare l'operatore di **meet** (unione) per rappresentare:
+$
+    in[b] = out[p_1] \cup out[p_2] \cup ... \cup out[p_n]
+$
