@@ -69,3 +69,15 @@ I nodi di **join** sono nodi con multipli predecessori e si può usare l'operato
 $
     in[b] = out[p_1] \cup out[p_2] \cup ... \cup out[p_n]
 $
+
+## Live Variable Analysis
+
+Una variabile *v* è viva (**live**) in un punto _p_ del programma se il suo valore è usato lungo qualche percorso del flow graph a partire da _p_. La motivazione che ci porta a questo tipo di analisi è l'allocazione dei registri, in modo che possano essere riutilizzati se una variabile non è più live (**dead**).
+
+Un modo di risolvere il problema è il tracciare gli usi all'indietro fino alle definizioni.
+Abbiamo in un Basic Block _b_:
+- $Use[b]$ è l'insieme degli <a href="#definizionieffetti">usi localmente esposti</a> in b
+- $Def[b]$ è l'insieme delle variabili definite in b
+- $out[b] - Def[b]$ è la propagazione delle variabili vive in ingresso
+- $in[b] = Use[b] \cup (out[b] - def[b])$ è la funzione di trasferimento per il blocco b
+
