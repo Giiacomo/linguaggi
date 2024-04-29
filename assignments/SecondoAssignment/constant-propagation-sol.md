@@ -36,7 +36,7 @@ Nel programma è presente un **backedge** (BB12 $`\longrightarrow`$ BB8), sono s
 
 | Nome BB | Contenuto | iterazione 1 - in[b] | iterazione 1 - out[b] | iterazione 2 - in[b] | iterazione 2 - out[b] |
 |---------|-----------|-----------------------|------------------------|-----------------------|------------------------|
-| entry   | {}        | {}                    | {}                     | {}                    | {}                     |
+| entry   | $`\emptyset`$        | $`\emptyset`$                    | $`\emptyset`$                     | $`\emptyset`$                    | $`\emptyset`$                     |
 | BB1     | k=2       | out[entry]            | {(k,2)}                | out[entry]            | {(k,2)}                |
 | BB2     | if        | out[BB1]              | {(k,2)}                | out[BB1]              | {(k,2)}                |
 | BB3     | a=k+2     | out[BB2]              | {(a,4), (k,2)}         | out[BB2]              | {(a,4), (k,2)}         |
@@ -50,4 +50,4 @@ Nel programma è presente un **backedge** (BB12 $`\longrightarrow`$ BB8), sono s
 | BB11    | y=a*b     | out[BB10]             | {(y,8), (b,2), (a,4)}  | out[BB10]             | {(y,8), (b,2), (a,4)}  |
 | BB12    | k++       | out[BB11]             | {(k,5), (y,8), (x,8), (b,2), (a,4)} | out[BB11]    | {(y,8), (b,2), (a,4)} |
 | BB13    | print(a+x) | out[BB8]             | {(a,4)}                | out[BB8]              | {(a,4)}                |
-| exit    | {}        | out[BB13]            | {(a,4)}                | out[BB13]             | {(a,4)}                |
+| exit    | $`\emptyset`$        | out[BB13]            | {(a,4)}                | out[BB13]             | {(a,4)}                |
