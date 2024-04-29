@@ -24,15 +24,15 @@ Se abbiamo la coppia <x, c> al nodo n, significa che x è garantito avere il val
 |                               | Dataflow Problem 3 (CP)                                                    |
 |-------------------------------|------------------------------------------------------------------------------|
 | **Dominio**                   | Insieme di coppie <variabile, valore costante>                          |
-| **Direction**                 | Forward: $out[b] = f_b(in[b]), in[b] = (\wedge out[pred(b)])$                |
-| **Transfer Function**         | $f_b(x)=gen_b(\cup(x-kill_b))$                                           |
-| **Meet Operation**            | $(\cap)$                                                                   |
-| **Boundary Condition**        | $out[entry]=(\{\})$                                                         |
-| **Initial Interior Points**   | $out[b]=U$                                                                |
+| **Direction**                 | Forward: $`out[b] = f_b(in[b]), in[b] = (\wedge out[pred(b)])`$                |
+| **Transfer Function**         | $`f_b(x)=gen_b(\cup(x-kill_b))`$                                           |
+| **Meet Operation**            | $`(\cap)`$                                                                   |
+| **Boundary Condition**        | $`out[entry]=(\{\})`$                                                         |
+| **Initial Interior Points**   | $`out[b]=U`$                                                                |
 
 ## Soluzione secondo punto
 
-Nel programma è presente un **backedge** (BB12 $\longrightarrow$ BB8), sono state necessarie due iterazioni per arrivare a convergenza dell'algoritmo. 
+Nel programma è presente un **backedge** (BB12 $`\longrightarrow`$ BB8), sono state necessarie due iterazioni per arrivare a convergenza dell'algoritmo. 
 
 | Nome BB | Contenuto | iterazione 1 - in[b] | iterazione 1 - out[b] | iterazione 2 - in[b] | iterazione 2 - out[b] |
 |---------|-----------|-----------------------|------------------------|-----------------------|------------------------|
@@ -43,8 +43,8 @@ Nel programma è presente un **backedge** (BB12 $\longrightarrow$ BB8), sono sta
 | BB4     | x=5       | out[BB3]              | {(x,5), (a,4), (k,2)}  | out[BB3]              | {(x,5), (a,4), (k,2)}  |
 | BB5     | a=k*2     | out[BB2]              | {(a,4), (k,2)}         | out[BB2]              | {(a,4), (k,2)}         |
 | BB6     | x=8       | out[BB5]              | {(x,8), (a,4), (k,2)}  | out[BB5]              | {(x,8), (a,4), (k,2)}  |
-| BB7     | k=a       | out[BB4] $\cup$ out[BB6]     | {(a,4), (k,4)}         | out[BB4] $\cup$ out[BB6]     | {(a,4), (k,4)}                |
-| BB8     | while     | out[BB7] $\cup$ out[BB12]    | {(a,4)}                | out[BB7] $\cup$ out[BB12]    | {(a,4)}                |
+| BB7     | k=a       | out[BB4] $`\cup`$ out[BB6]     | {(a,4), (k,4)}         | out[BB4] $`\cup`$ out[BB6]     | {(a,4), (k,4)}                |
+| BB8     | while     | out[BB7] $`\cup`$ out[BB12]    | {(a,4)}                | out[BB7] $`\cup`$ out[BB12]    | {(a,4)}                |
 | BB9     | b=2       | out[BB8]              | {(b,2), (a,4)}         | out[BB8]              | {(b,2), (a,4)}         |
 | BB10    | x=a+k     | out[BB9]              | {(x,8), (b,2), (a,4)}  | out[BB9]              | {(b,2), (a,4)}  |
 | BB11    | y=a*b     | out[BB10]             | {(y,8), (b,2), (a,4)}  | out[BB10]             | {(y,8), (b,2), (a,4)}  |
