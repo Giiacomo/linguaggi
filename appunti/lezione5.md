@@ -81,3 +81,46 @@ Abbiamo in un Basic Block _b_:
 - $out[b] - Def[b]$ è la propagazione delle variabili vive in ingresso
 - $in[b] = Use[b] \cup (out[b] - def[b])$ è la funzione di trasferimento per il blocco b
 
+## Available Expression
+
+E' utile in ottimizzazioni come **Global common Subexpression Elimination**, ad esempio se abbiamo:
+```
+if (cond) {
+    x = m + n;
+} else {
+    y = m + n;
+}
+z = m + n;
+```
+
+in cui ```m + n``` è già stato calcolato e ricalcolarlo risulta **ridondante**.
+
+Abbiamo un problema se ```m + n``` non viene calcolato ad esempio in uno dei due rami dell'_if_. Occorre quindi un modo di comprendere meglio la ridondanza. Ci interessano solo le espressioni **binarie** nella forma $x \oplus y$.
+
+### Terminologia
+
+- Una espressione $x \oplus y$ è **available** in un punto _p_ del programma se ogni percorso che parte dal blocco **ENTRY** e arriva a _p_ valuta l'espressione $x \oplus y$.
+- Un blocco **genera** l'espressione $x \oplus y$ se la valuta ma non ridefinisce ne x o y in seguito.
+- Un blocco **uccide** l'espressione $x \oplus y$ se assegna un valore a x o y e non ricalcola successivamente $x \oplus y$
+
+Ad esempio:
+```c
+x = y + 1; // genera y+1 
+y = m + n; // genera m+n uccide y+1
+```
+
+La funzione di transfer si può definire così:
+$
+f_b = gen_b \cup (x - kill_b)
+$
+
+
+Per riassumere: 
+- Nell’analisi delle available expressions eliminiamo
+un’espressione perché è stata calcolata in passato
+- Nell’analisi delle live variables eliminiamo una
+variabile perché non verrà usata in futuro
+
+<img src="./imgs/dfanalysis.PNG">
+
+nell'immagine precedente abbiamo come meet operator $\cap$ perchè ci interessa che tutti i percorsi mantengano le condizioni, e non almeno uno. Mentre le 
